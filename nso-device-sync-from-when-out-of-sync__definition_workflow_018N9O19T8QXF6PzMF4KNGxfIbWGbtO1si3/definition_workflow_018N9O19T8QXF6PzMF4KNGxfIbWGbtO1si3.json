@@ -222,7 +222,9 @@
       "base_type": "runtime_user",
       "object_type": "definition_runtime_user",
       "properties": {
-        "display_name": "Default NSO Admin"
+        "display_name": "Default NSO Admin",
+        "user": "********",
+        "password": "*******"
       }
     }
   }

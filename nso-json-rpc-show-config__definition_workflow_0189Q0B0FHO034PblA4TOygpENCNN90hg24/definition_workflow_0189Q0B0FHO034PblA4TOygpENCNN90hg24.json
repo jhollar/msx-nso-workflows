@@ -117,31 +117,33 @@
     ]
   },
   "targets": {
-    "definition_target_0189Q08XZIVN5471t53a7QYRdxhnKoQK5uL": {
-      "unique_name": "definition_target_0189Q08XZIVN5471t53a7QYRdxhnKoQK5uL",
-      "name": "mcrawfo2-lnx.cisco.com",
-      "title": "mcrawfo2-lnx.cisco.com",
+    "definition_target_018M2NLVCJC345VpwQHRBipxufbwTcFKcgi": {
+      "unique_name": "definition_target_018M2NLVCJC345VpwQHRBipxufbwTcFKcgi",
+      "name": "mcrawfo2-lnx",
+      "title": "mcrawfo2-lnx",
       "type": "json-rpc.endpoint",
       "base_type": "target",
       "object_type": "definition_target",
       "properties": {
-        "default_runtime_user_id": "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh",
-        "display_name": "mcrawfo2-lnx.cisco.com",
-        "host": "mcrawfo2-lnx.cisco.com",
+        "default_runtime_user_id": "definition_runtime_user_018M2NH5PRLG02BRSUJUgrdMazoyauG11A8",
+        "display_name": "nso.demo.ciscomsx",
+        "host": "nso.demo.ciscomsx.com",
         "port": 8080,
         "protocol": "http"
       }
     }
   },
   "runtime_users": {
-    "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh": {
-      "unique_name": "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh",
+    "definition_runtime_user_018M2NH5PRLG02BRSUJUgrdMazoyauG11A8": {
+      "unique_name": "definition_runtime_user_018M2NH5PRLG02BRSUJUgrdMazoyauG11A8",
       "name": "Default NSO Admin",
       "title": "Default NSO Admin",
       "type": "runtime_user.json-rpc_credentials",
       "base_type": "runtime_user",
       "object_type": "definition_runtime_user",
       "properties": {
+        "user": "admin",
+        "password": "admin",
         "display_name": "Default NSO Admin"
       }
     }
