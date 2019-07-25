@@ -1,0 +1,174 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_018UR1RARD7GS4gf1mSKR2aMHLZqZg4Lczq",
+    "name": "Read Service Schema",
+    "title": "Read Service Schema",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "/resource-pools/id-pool",
+          "scope": "input",
+          "name": "Path",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018UTQJIFY9M45AfFpXDktmbCWVRAWJQrJT",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Read Service Schema",
+      "favorite": false,
+      "target": {
+        "target_type": "json-rpc.endpoint",
+        "target_id": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_018UR22AUVJXC3lkxNa6EYkE7kqsVZLaksP",
+        "name": "Session Login",
+        "title": "Session Login",
+        "type": "jsonrpc.login",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Login",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018UR25HPJGXC4VFafANARJC8wI5yjEH5hM",
+        "name": "Start a new Transaction",
+        "title": "Start a new Transaction",
+        "type": "jsonrpc.newtrans",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "database": "running",
+          "display_name": "Start a new Transaction",
+          "mode": "read",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018UR22AUVJXC3lkxNa6EYkE7kqsVZLaksP.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018UR2DMETVE43zP7r2jdNxLxYv8InApoHq",
+        "name": "Get Schema",
+        "title": "Get Schema",
+        "type": "jsonrpc.getschema",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": true,
+          "display_name": "Get Schema",
+          "insertvalues": true,
+          "levels": 100,
+          "path": "$workflow.definition_workflow_018UR1RARD7GS4gf1mSKR2aMHLZqZg4Lczq.input.variable_workflow_018UTQJIFY9M45AfFpXDktmbCWVRAWJQrJT$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018UR22AUVJXC3lkxNa6EYkE7kqsVZLaksP.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          },
+          "th": "$activity.definition_activity_018UR25HPJGXC4VFafANARJC8wI5yjEH5hM.output.th$"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018UR3U66HXK46dX5t46Gkrv3wre1uNMWZj",
+        "name": "Session Logout",
+        "title": "Session Logout",
+        "type": "jsonrpc.logout",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Logout",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018UR22AUVJXC3lkxNa6EYkE7kqsVZLaksP.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW": {
+      "unique_name": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+      "name": "mcrawfo2-lnx",
+      "title": "mcrawfo2-lnx",
+      "type": "json-rpc.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+        "display_name": "mcrawfo2-lnx",
+        "host": "mcrawfo2-lnx.cisco.com",
+        "port": 8080,
+        "protocol": "http"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi": {
+      "unique_name": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+      "name": "Default NSO Admin",
+      "title": "Default NSO Admin",
+      "type": "runtime_user.json-rpc_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "Default NSO Admin",
+        "password": "*****",
+        "user": "*****"
+      }
+    }
+  }
+}

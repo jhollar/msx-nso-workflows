@@ -1,0 +1,579 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9",
+    "name": "WeGotTrouble",
+    "title": "WeGotTrouble",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "superuser",
+          "scope": "input",
+          "name": "Username",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018T8H2XHB9QQ3ZxBZnhEl7vqYqRA0cRC7F",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "F7GDFtCzSJ",
+          "scope": "input",
+          "name": "Password",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018T8HCJTBJJO2ZKlSM11s8KBUjn3qRqN5L",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Serial",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "description": "Right here in River City.",
+      "display_name": "WeGotTrouble",
+      "favorite": false,
+      "target": {
+        "target_type": "web-service.endpoint",
+        "target_id": "definition_target_018T8K9Q3BCGP3Ekd6V0Z57elEI4IECOfDo",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_018T8IJVVXG5Z64lymRGzaqVamUIukb1eEk",
+        "name": "HTTP Request",
+        "title": "Login",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "body": "{\n  \"password\": \"$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HCJTBJJO2ZKlSM11s8KBUjn3qRqN5L$\",\n  \"username\": \"$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8H2XHB9QQ3ZxBZnhEl7vqYqRA0cRC7F$\"\n}",
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "display_name": "Login",
+          "method": "POST",
+          "relative_url": "/idm/api/v1/accesstoken",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_018T8K9Q3BCGP3Ekd6V0Z57elEI4IECOfDo"
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T8M93TFZE872QdYZHC7zK6OYq4Qv9In2",
+        "name": "JSONPath Query",
+        "title": "Extract Auth Token",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Extract Auth Token",
+          "input_json": "$activity.definition_activity_018T8IJVVXG5Z64lymRGzaqVamUIukb1eEk.output.response_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.oauth2.access_token",
+              "jsonpath_query_name": "AccessToken",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T8PBGAVCI22E7q2ANCuc7SqNUM5iHIOE",
+        "name": "HTTP Request",
+        "title": "Query IPNP",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $activity.definition_activity_018T8M93TFZE872QdYZHC7zK6OYq4Qv9In2.output.jsonpath_queries.AccessToken$"
+            }
+          ],
+          "display_name": "Query IPNP",
+          "method": "GET",
+          "relative_url": "/admin/devices/$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": true,
+            "override_workflow_target_group_criteria": false,
+            "target_id": "definition_target_018T8OQ28DSPS0XLWGkjfjYToSV7UjqUtE6",
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T8R3JUS65I4tWxcFMTvp6vA9HThtAkTB",
+        "name": "JSONPath Query",
+        "title": "Extract IPNP Device Status",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Extract IPNP Device Status",
+          "input_json": "$activity.definition_activity_018T8PBGAVCI22E7q2ANCuc7SqNUM5iHIOE.output.response_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.details.SN",
+              "jsonpath_query_name": "Serial",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            },
+            {
+              "jsonpath_query": "$.LastContact",
+              "jsonpath_query_name": "LastContact",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T9JMYC91LD3dRjGiSlTTZlvga647kgn2",
+        "name": "Condition Block",
+        "title": "Check IPNP Device Status",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Check IPNP Device Status"
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_018T9JN0TFMY84ka2y0u0HCqA6sb7O7f6MI",
+            "name": "Condition Branch",
+            "title": "Not Called Home",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_018T8R3JUS65I4tWxcFMTvp6vA9HThtAkTB.output.jsonpath_queries.Serial$",
+                "operator": "ne",
+                "right_operand": "$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$"
+              },
+              "continue_on_failure": false,
+              "display_name": "Not Called Home"
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_018T9LC80EA0A1EPTu0loORIJe8uVCMbD2h",
+                "name": "Succeeded",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "succeeded",
+                  "display_name": "Succeeded",
+                  "result_message": "Device Not Called Home"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_018T96NI8QXTF0YvMeSAlmYErLAC0PvdP2e",
+        "name": "HTTP Request",
+        "title": "Query Device List",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $activity.definition_activity_018T8M93TFZE872QdYZHC7zK6OYq4Qv9In2.output.jsonpath_queries.AccessToken$"
+            }
+          ],
+          "display_name": "Query Device List",
+          "method": "GET",
+          "relative_url": "/manage/api/v3/devices?page=0\u0026pageSize=1\u0026serialKey=$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T9MJKYB0BO0yoVsFG23OwkGaGnBzIZ8G",
+        "name": "JSONPath Query",
+        "title": "Extract Device List Result",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Extract Device List Result",
+          "input_json": "$activity.definition_activity_018T96NI8QXTF0YvMeSAlmYErLAC0PvdP2e.output.response_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.message",
+              "jsonpath_query_name": "Message",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T9N2R8PSH16gyWnYHj03zGFNne2BjYh5",
+        "name": "Condition Block",
+        "title": "Check Device List Status",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Check Device List Status"
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_018T9N2T6YOPQ3GkQ90JRVHhRuNrZdg2TtS",
+            "name": "Condition Branch",
+            "title": "Not In Device List",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_018T9MJKYB0BO0yoVsFG23OwkGaGnBzIZ8G.output.jsonpath_queries.Message$",
+                "operator": "ne",
+                "right_operand": "Found device(s)."
+              },
+              "continue_on_failure": false,
+              "display_name": "Not In Device List"
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_018T9NP0Y8RG82nAHxtq5prUp7nNarqpFkB",
+                "name": "Succeeded",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "succeeded",
+                  "display_name": "Succeeded",
+                  "result_message": "Device Not in Manage"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_018T9PJJ364LE3fiQVLWYrd8qcMfUwcX9xH",
+        "name": "HTTP Request",
+        "title": "Query Shard Assignment",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $activity.definition_activity_018T8M93TFZE872QdYZHC7zK6OYq4Qv9In2.output.jsonpath_queries.AccessToken$"
+            }
+          ],
+          "display_name": "Query Shard Assignment",
+          "method": "GET",
+          "relative_url": "/manage/api/v2/shardmanagers/devices/$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T9QZ4L9JUX40msX4iWYt1M7k1WAGxNsz",
+        "name": "JSONPath Query",
+        "title": "Extract Shard Assignment Result",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Extract Shard Assignment Result",
+          "input_json": "$activity.definition_activity_018T9PJJ364LE3fiQVLWYrd8qcMfUwcX9xH.output.response_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.success",
+              "jsonpath_query_name": "Success",
+              "jsonpath_query_type": "boolean",
+              "zdate_type_format": ""
+            },
+            {
+              "jsonpath_query": "$.responseObject.host",
+              "jsonpath_query_name": "Host",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018T9T5AOVQ234dZEg32r0bUbIKM3ltB4YP",
+        "name": "Condition Block",
+        "title": "Check Shard Assignment Status",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Check Shard Assignment Status"
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_018T9T5CP27EM4w1CWtVrge6lGuF65wnDeD",
+            "name": "Condition Branch",
+            "title": "Not Assigned",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_018T9QZ4L9JUX40msX4iWYt1M7k1WAGxNsz.output.jsonpath_queries.Success$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "Not Assigned"
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_018T9THQ818HH7Px8l96CwMd9LQXzzSXuvU",
+                "name": "Succeeded",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "succeeded",
+                  "display_name": "Succeeded",
+                  "result_message": "Not Assigned to Shard"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_018TA0ZJIYMQH2YZwbIPyUYCpXKZ6jCLu0p",
+        "name": "HTTP Request",
+        "title": "Query NSO PNP",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/xml",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "body": "\u003cpnp xmlns=\"urn:cisco:pnp\" version=\"1.0\" udi=\"PID:ISR4431/K9,VID:V01,SN:$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$\"\u003e\n\u003cinfo xmlns=\"urn:cisco:pnp:work-info\" correlator=\"CiscoPnP-1.0-1123454-315-7F4EA7AA4FC8-32\"\u003e\n\u003cdeviceId\u003e\n  \u003cudi\u003ePID:ISR4431/K9,VID:V01,SN:$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$\u003c/udi\u003e\n  \u003cSUDI\u003ePID:ISR4431/K9,SN:$workflow.definition_workflow_018T8G519AE3P6XnHXXv20erxnVqakOBtw9.input.variable_workflow_018T8HJTUJYBL42UOv8EgRvGzwRydpPUKkj$\u003c/SUDI\u003e\n  \u003chostname\u003eMSX-INET\u003c/hostname\u003e\n  \u003cauthRequired\u003efalse\u003c/authRequired\u003e\n  \u003cviaProxy\u003etrue\u003c/viaProxy\u003e\n  \u003csecurityAdvise\u003ePassword in clear text in unsecured transport\u003c/securityAdvise\u003e\n\u003c/deviceId\u003e\u003c/info\u003e\u003c/pnp\u003e",
+          "content_type": "application/xml",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $activity.definition_activity_018T8M93TFZE872QdYZHC7zK6OYq4Qv9In2.output.jsonpath_queries.AccessToken$"
+            }
+          ],
+          "display_name": "Query NSO PNP",
+          "method": "POST",
+          "relative_url": "/pnp/WORK-REQUEST",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": true,
+            "override_workflow_target_group_criteria": false,
+            "target_id": "definition_target_018T8OQ28DSPS0XLWGkjfjYToSV7UjqUtE6",
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TA3XYK5RZ33Uk2vOdPvvIWnBlBurdQb4",
+        "name": "Match Regular Expression",
+        "title": "Match Regular Expression",
+        "type": "core.matchregex",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Match Regular Expression",
+          "input_regex": ".*take it easy.*",
+          "input_string": "$activity.definition_activity_018TA0ZJIYMQH2YZwbIPyUYCpXKZ6jCLu0p.output.response_body$",
+          "match_case": true
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TA4LVUVOTW5kEq4vXh3PISc3gAhLdtmi",
+        "name": "Condition Block",
+        "title": "Check NSO PNP Status",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Check NSO PNP Status"
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_018TA4LY31DIX54ncpc9gupKGBrtePONDU0",
+            "name": "Condition Branch",
+            "title": "Not Contacted",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_018TA3XYK5RZ33Uk2vOdPvvIWnBlBurdQb4.output.has_match$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "Not Contacted"
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_018TA4Y7VTZ1J0HI8E5QZHH8A3Q5gIPpvn7",
+                "name": "Succeeded",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "succeeded",
+                  "display_name": "Succeeded",
+                  "result_message": "Device cannot contact NSO"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_018TA56Y5RY4M7KrPAy9P6RxQt28Jy9HDgl",
+        "name": "Succeeded",
+        "title": "Completed",
+        "type": "logic.completed",
+        "base_type": "activity",
+        "properties": {
+          "completion_type": "succeeded",
+          "display_name": "Succeeded",
+          "result_message": "Device can contact NSO"
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_018T8K9Q3BCGP3Ekd6V0Z57elEI4IECOfDo": {
+      "unique_name": "definition_target_018T8K9Q3BCGP3Ekd6V0Z57elEI4IECOfDo",
+      "name": "portal@idpl",
+      "title": "portal@idpl",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": true,
+        "display_name": "portal@idpl",
+        "host": "idpl.lab.ciscomsx.com",
+        "no_runtime_user": true,
+        "port": 443,
+        "protocol": "https"
+      }
+    },
+    "definition_target_018T8OQ28DSPS0XLWGkjfjYToSV7UjqUtE6": {
+      "unique_name": "definition_target_018T8OQ28DSPS0XLWGkjfjYToSV7UjqUtE6",
+      "name": "ipnp@idpl",
+      "title": "ipnp@idpl",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": true,
+        "display_name": "ipnp@idpl",
+        "host": "192.171.4.63",
+        "no_runtime_user": true,
+        "port": 8443,
+        "protocol": "https"
+      }
+    }
+  }
+}

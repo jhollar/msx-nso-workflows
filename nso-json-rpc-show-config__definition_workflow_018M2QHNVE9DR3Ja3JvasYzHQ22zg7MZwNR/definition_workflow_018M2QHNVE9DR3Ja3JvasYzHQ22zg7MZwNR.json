@@ -1,0 +1,178 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_018M2QHNVE9DR3Ja3JvasYzHQ22zg7MZwNR",
+    "name": "Show Configuration",
+    "title": "Show Configuration",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "/pnp:pnp/pnp:map",
+          "scope": "local",
+          "name": "Path",
+          "type": "datatype.string",
+          "description": "Configuration Path to Retrieve"
+        },
+        "unique_name": "variable_workflow_018M2QI8VY6WH3jeQdaw9XIvGMbMYIstJwJ",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "{\"data\": \"value\"}",
+          "scope": "output",
+          "name": "Config",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018M4274WHBN50tB4fyoX72kWUxunB5b4Fs",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Show Configuration",
+      "favorite": false,
+      "target": {
+        "target_type": "json-rpc.endpoint",
+        "target_id": "definition_target_0189Q08XZIVN5471t53a7QYRdxhnKoQK5uL",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_018M2QII3B55M44zu9semOB45mgUtcyQTLL",
+        "name": "Session Login",
+        "title": "Session Login",
+        "type": "jsonrpc.login",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Login",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018M2QIOQYAPC62OhrvCVEXgchp4tsMh0xC",
+        "name": "Create a new transaction",
+        "title": "Create a new transaction",
+        "type": "jsonrpc.newtrans",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "database": "running",
+          "display_name": "Create a new transaction",
+          "mode": "read_write",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018M2QII3B55M44zu9semOB45mgUtcyQTLL.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018M2QIYG5H0I0zLerf7aXjFoH2KR6y7lu7",
+        "name": "Show Configuration",
+        "title": "Show Configuration",
+        "type": "jsonrpc.showconfig",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Show Configuration",
+          "max_size": 0,
+          "path": "$workflow.definition_workflow_018M2QHNVE9DR3Ja3JvasYzHQ22zg7MZwNR.local.variable_workflow_018M2QI8VY6WH3jeQdaw9XIvGMbMYIstJwJ$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018M2QII3B55M44zu9semOB45mgUtcyQTLL.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          },
+          "th": "$activity.definition_activity_018M2QIOQYAPC62OhrvCVEXgchp4tsMh0xC.output.th$",
+          "with_oper": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018M49YQV8EWV1yduLkXbxamC6Xrn5iRKcP",
+        "name": "Set Variables",
+        "title": "Set Variables",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Set Variables",
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_018M2QHNVE9DR3Ja3JvasYzHQ22zg7MZwNR.output.variable_workflow_018M4274WHBN50tB4fyoX72kWUxunB5b4Fs$",
+              "variable_value_new": "$activity.definition_activity_018M2QIYG5H0I0zLerf7aXjFoH2KR6y7lu7.output.output$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_0189Q08XZIVN5471t53a7QYRdxhnKoQK5uL": {
+      "unique_name": "definition_target_0189Q08XZIVN5471t53a7QYRdxhnKoQK5uL",
+      "name": "mcrawfo2-lnx.cisco.com",
+      "title": "mcrawfo2-lnx.cisco.com",
+      "type": "json-rpc.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh",
+        "display_name": "mcrawfo2-lnx.cisco.com",
+        "host": "mcrawfo2-lnx.cisco.com",
+        "port": 8080,
+        "protocol": "http"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh": {
+      "unique_name": "definition_runtime_user_0189PZYFKHR5R0pbWd4LWpvwTsB4zbJTKYh",
+      "name": "Default NSO Admin",
+      "title": "Default NSO Admin",
+      "type": "runtime_user.json-rpc_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "Default NSO Admin"
+      }
+    }
+  }
+}

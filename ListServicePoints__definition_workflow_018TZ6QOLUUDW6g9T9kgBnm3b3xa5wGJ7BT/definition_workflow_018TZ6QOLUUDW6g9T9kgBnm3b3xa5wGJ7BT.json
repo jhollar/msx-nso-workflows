@@ -1,0 +1,210 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_018TZ6QOLUUDW6g9T9kgBnm3b3xa5wGJ7BT",
+    "name": "List Service Points",
+    "title": "List Service Points",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "ServicePoints",
+          "type": "datatype.string"
+        },
+        "unique_name": "variable_workflow_018TZAJDT5PW418Le7jOOSUnCqBwvHzJFkT",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "List Service Points",
+      "favorite": false,
+      "target": {
+        "target_type": "json-rpc.endpoint",
+        "target_id": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_018TZ6VSEWZ9C1zzlYgqWsI7bHRqiXq4hmm",
+        "name": "Session Login",
+        "title": "Session Login",
+        "type": "jsonrpc.login",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Login",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TZ8XNVHBBS0NbAtSTGZeW41ixPAn9EaG",
+        "name": "Start a new Transaction",
+        "title": "Start a new Transaction",
+        "type": "jsonrpc.newtrans",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "database": "running",
+          "display_name": "Start a new Transaction",
+          "mode": "read",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TZ6VSEWZ9C1zzlYgqWsI7bHRqiXq4hmm.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TZ9OEGGICS3woqSpUlgICSWIOCzdwws9",
+        "name": "Get Service Points",
+        "title": "Get Service Points",
+        "type": "jsonrpc.getsrvpoints",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Get Service Points",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TZ6VSEWZ9C1zzlYgqWsI7bHRqiXq4hmm.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TZ9SQ2SW5W75YuhCLqVVaKZMXicrr9D5",
+        "name": "Session Logout",
+        "title": "Session Logout",
+        "type": "jsonrpc.logout",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Logout",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TZ6VSEWZ9C1zzlYgqWsI7bHRqiXq4hmm.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018ULROB9F49G0meHGaaj9xjad50MNC9ubt",
+        "name": "JSONPath Query",
+        "title": "Extract Service Points",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Extract Service Points",
+          "input_json": "$activity.definition_activity_018TZ9OEGGICS3woqSpUlgICSWIOCzdwws9.output.output$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.result.service_points",
+              "jsonpath_query_name": "ServicePoints",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": ""
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TZANDDXW6C0AW1In1sYLtLFfGGUQwh9O",
+        "name": "Set Variables",
+        "title": "Set Variables",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Set Variables",
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_018TZ6QOLUUDW6g9T9kgBnm3b3xa5wGJ7BT.output.variable_workflow_018TZAJDT5PW418Le7jOOSUnCqBwvHzJFkT$",
+              "variable_value_new": "$activity.definition_activity_018ULROB9F49G0meHGaaj9xjad50MNC9ubt.output.jsonpath_queries.ServicePoints$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW": {
+      "unique_name": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+      "name": "mcrawfo2-lnx",
+      "title": "mcrawfo2-lnx",
+      "type": "json-rpc.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+        "display_name": "mcrawfo2-lnx",
+        "host": "mcrawfo2-lnx.cisco.com",
+        "port": 8080,
+        "protocol": "http"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi": {
+      "unique_name": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+      "name": "Default NSO Admin",
+      "title": "Default NSO Admin",
+      "type": "runtime_user.json-rpc_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "Default NSO Admin",
+        "password": "*****",
+        "user": "*****"
+      }
+    }
+  }
+}

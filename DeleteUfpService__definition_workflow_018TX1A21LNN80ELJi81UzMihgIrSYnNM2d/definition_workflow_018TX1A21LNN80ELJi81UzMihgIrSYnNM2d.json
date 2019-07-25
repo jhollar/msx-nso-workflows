@@ -1,0 +1,199 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_018TX1A21LNN80ELJi81UzMihgIrSYnNM2d",
+    "name": "Delete UFP Service",
+    "title": "Delete UFP Service",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "ServiceId",
+          "type": "datatype.string",
+          "description": "UFP Service Id"
+        },
+        "unique_name": "variable_workflow_018TX2KH4WTM84MXDghc0CUPWgJNOukB2eJ",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Delete UFP Service",
+      "favorite": false,
+      "target": {
+        "target_type": "json-rpc.endpoint",
+        "target_id": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_018TX1GYDQDG06Nav2oLzdgJI1CbjDLV5sX",
+        "name": "Session Login",
+        "title": "Session Login",
+        "type": "jsonrpc.login",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Session Login",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TX1VM4NN2S41qd9jYArO9C0qweCKCQPq",
+        "name": "Start a new Transaction",
+        "title": "Start a new Transaction",
+        "type": "jsonrpc.newtrans",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "database": "running",
+          "display_name": "Start a new Transaction",
+          "mode": "read_write",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TX1GYDQDG06Nav2oLzdgJI1CbjDLV5sX.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TX22FA9WXG1NmQp8vblNIsaeeDLUD8ih",
+        "name": "Delete Device Configuration",
+        "title": "Delete Service Configuration",
+        "type": "jsonrpc.deletedevice",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Delete Service Configuration",
+          "path": "/vmsservice:ufp/vmsservice{$workflow.definition_workflow_018TX1A21LNN80ELJi81UzMihgIrSYnNM2d.input.variable_workflow_018TX2KH4WTM84MXDghc0CUPWgJNOukB2eJ$}",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TX1GYDQDG06Nav2oLzdgJI1CbjDLV5sX.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          },
+          "th": "$activity.definition_activity_018TX1VM4NN2S41qd9jYArO9C0qweCKCQPq.output.th$"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TX2ZZKTXPK65IieX7YMWvyvS1ofxVYp6",
+        "name": "Validate Commit",
+        "title": "Validate Commit",
+        "type": "jsonrpc.validatecommit",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Validate Commit",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TX1GYDQDG06Nav2oLzdgJI1CbjDLV5sX.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          },
+          "th": "$activity.definition_activity_018TX1VM4NN2S41qd9jYArO9C0qweCKCQPq.output.th$"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_018TX38NNN0L80eBnNwZ0khd6Y8MqcCFLii",
+        "name": "Commit Transaction",
+        "title": "Commit Transaction",
+        "type": "jsonrpc.commit",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Commit Transaction",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sessionid": "$activity.definition_activity_018TX1GYDQDG06Nav2oLzdgJI1CbjDLV5sX.output.sessionid$",
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          },
+          "th": "$activity.definition_activity_018TX1VM4NN2S41qd9jYArO9C0qweCKCQPq.output.th$"
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW": {
+      "unique_name": "definition_target_018S2WX86K30O7Xd3yM19kVDjaLfvebt0AW",
+      "name": "mcrawfo2-lnx",
+      "title": "mcrawfo2-lnx",
+      "type": "json-rpc.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+        "display_name": "mcrawfo2-lnx",
+        "host": "mcrawfo2-lnx.cisco.com",
+        "port": 8080,
+        "protocol": "http"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi": {
+      "unique_name": "definition_runtime_user_018S2WVFMELXS17BFjBABIJvyjwwgOAFipi",
+      "name": "Default NSO Admin",
+      "title": "Default NSO Admin",
+      "type": "runtime_user.json-rpc_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "Default NSO Admin",
+        "password": "*****",
+        "user": "*****"
+      }
+    }
+  }
+}
